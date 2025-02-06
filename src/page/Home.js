@@ -12,6 +12,7 @@ export default function Home() {
   const deltaT = Ts - (parseFloat(t8) || 0);
   const A = 2 * Math.PI * (parseFloat(r) || 0) * (parseFloat(l) || 0);
   const q = (parseFloat(v) || 0) * (parseFloat(i) || 0);
+  const h = A !== 0 ? q / (A * deltaT) : 0;
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-6">
@@ -34,7 +35,7 @@ export default function Home() {
               />
             ))}
           </div>
-          <p className="mt-2 font-semibold">Ts = {Ts.toFixed(2)}</p>
+          <p className="mt-2 font-semibold">Ts = {Ts.toFixed(2)} °C</p>
         </div>
 
         <div>
@@ -45,7 +46,7 @@ export default function Home() {
             value={t8}
             onChange={(e) => setT8(e.target.value)}
           />
-          <p className="mt-2 font-semibold">ΔT = {deltaT.toFixed(2)}</p>
+          <p className="mt-2 font-semibold">ΔT = {deltaT.toFixed(2)} °C</p>
         </div>
 
         <div>
@@ -66,7 +67,7 @@ export default function Home() {
               placeholder="Length"
             />
           </div>
-          <p className="mt-2 font-semibold">A = {A.toFixed(2)}</p>
+          <p className="mt-2 font-semibold">A = {A.toFixed(2)} m²</p>
         </div>
 
         <div>
@@ -87,7 +88,11 @@ export default function Home() {
               placeholder="Current"
             />
           </div>
-          <p className="mt-2 font-semibold">q = {q.toFixed(2)}</p>
+          <p className="mt-2 font-semibold">q = {q.toFixed(2)} watt</p>
+        </div>
+
+        <div>
+          <p className="mt-2 font-semibold">h = {h.toFixed(2)} W/m²K</p>
         </div>
       </div>
     </div>
