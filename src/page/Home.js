@@ -7,12 +7,27 @@ export default function Home() {
   const [l, setL] = useState("");
   const [v, setV] = useState("");
   const [i, setI] = useState("");
-  
+  const [hValues, setHValues] = useState([]);
+
   const Ts = tValues.reduce((sum, val) => sum + (parseFloat(val) || 0), 0) / 7;
   const deltaT = Ts - (parseFloat(t8) || 0);
   const A = 2 * Math.PI * (parseFloat(r) || 0) * (parseFloat(l) || 0);
   const q = (parseFloat(v) || 0) * (parseFloat(i) || 0);
-  const h = A !== 0 ? q / (A * deltaT) : 0;
+  const h = A !== 0 && deltaT !== 0 ? q / (A * deltaT) : 0;
+
+  const saveHValue = () => {
+    if (hValues.length < 10) {
+      setHValues([...hValues, h]);
+      setTValues(Array(7).fill(""));
+      setT8("");
+      setR("");
+      setL("");
+      setV("");
+      setI("");
+    }
+  };
+
+  const hAvg = hValues.length > 0 ? hValues.reduce((sum, val) => sum + val, 0) / hValues.length : 0;
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-6">
@@ -93,6 +108,19 @@ export default function Home() {
 
         <div>
           <p className="mt-2 font-semibold">h = {h.toFixed(2)} W/m²K</p>
+          <button onClick={saveHValue} className="mt-2 bg-blue-500 text-white px-4 py-2 rounded">
+            Save h Value
+          </button>
+        </div>
+
+        <div>
+          <p className="mt-2 font-semibold">h Values:</p>
+          <ul className="list-disc pl-5">
+            {hValues.map((hv, index) => (
+              <li key={index} className="mt-1">h{index + 1} = {hv.toFixed(2)}</li>
+            ))}
+          </ul>
+          {hValues.length === 10 && <p className="mt-2 font-semibold">h Average = {hAvg.toFixed(2)} W/m²K</p>}
         </div>
       </div>
     </div>
